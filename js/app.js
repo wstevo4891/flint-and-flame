@@ -8,7 +8,7 @@ App.Router.map(function() {
     this.resource('product', { path: '/:product_id' });
   });
   this.resource('contacts', function() {
-    this.resource('contact', { path: '/:name' });
+    this.resource('contact', { path: '/:contact_id' });
   });
 });
 
@@ -35,14 +35,6 @@ App.ContactsIndexController = Ember.Controller.extend({
   }.property()
 });
 
-App.Product = DS.Model.extend({
-  title: DS.attr('sting'),
-  price: DS.attr('number'),
-  description: DS.attr('sting'),
-  isOnSale: DS.attr('boolean'),
-  image: DS.attr('sting')
-});
-
 App.ProductsRoute = Ember.Route.extend({
   model: function() {
   	return this.store.findAll('product');
@@ -51,14 +43,16 @@ App.ProductsRoute = Ember.Route.extend({
 
 App.ContactsRoute = Ember.Route.extend({
   model: function() {
-    return App.CONTACTS;
+    return this.store.findAll('contact');
   }
 });
 
-App.ContactRoute = Ember.Route.extend({
-  model: function(params) {
-    return App.CONTACTS.findBy('name', params.name);
-  }
+App.Product = DS.Model.extend({
+  title: DS.attr('sting'),
+  price: DS.attr('number'),
+  description: DS.attr('sting'),
+  isOnSale: DS.attr('boolean'),
+  image: DS.attr('sting')
 });
 
 App.Product.FIXTURES = [
@@ -80,13 +74,21 @@ App.Product.FIXTURES = [
   }
 ];
 
-App.CONTACTS = [
+App.Contact = DS.Model.extend({
+  name: DS.attr('string'),
+  about: DS.attr('string'),
+  avatar: DS.attr('string')
+});
+
+App.Contact.FIXTURES = [
   {
+  	id: 1,
     name: 'Giamia',
     about: 'Although Giamia came from a humble spark of lightning, he quickly grew to be a great craftsman, providing all the warming instruments needed by those close to him.',
     avatar: 'images/contacts/giamia.png'
   },
   {
+  	id: 2,
     name: 'Anostagia',
     about: 'Knowing there was a need for it, Anostagia drew on her experience and spearheaded the Flint & Flame storefront. In addition to coding the site, she also creates a few products available in the store.',
     avatar: 'images/contacts/anostagia.png'
