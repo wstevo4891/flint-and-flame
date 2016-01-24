@@ -1,0 +1,65 @@
+{ "products": [
+    {
+      "id": 1,
+      "title": "Flint",
+      "price": 99,
+      "description": "Flint is a hard, sedimentary cryptocrystalline form of the mineral quartz, categorized as a variety of chert.",
+      "isOnSale": true,
+      "image": "images/products/flint.png",
+      "reviews": [100,101]
+    },
+    {
+      "id": 2,
+      "title": "Kindling",
+      "price": 249,
+      "description": "Easily combustible small sticks or twigs used for starting a fire.",
+      "isOnSale": false,
+      "image": "images/products/kindling.png",
+    }
+  ],
+  "reviews": [
+    {
+      "id": 100,
+      "product": 1,
+      "text": "Started a fire in no time!"
+    },
+    {
+      "id": 101,
+      "product": 1,
+      "text": "Not the brightest flame, but warm!"
+    }
+  ],
+  "contacts": [
+    {
+      "id": 1,
+      "name": "Giamia",
+      "about": "Although Giamia came from a humble spark of lightning, he quickly grew to be a great craftsman, providing all the warming instruments needed by those close to him.",
+      "avatar": "images/contacts/giamia.png"
+    },
+    {
+      "id": 2,
+      "name": "Anostagia",
+      "about": "Knowing there was a need for it, Anostagia drew on her experience and spearheaded the Flint & Flame storefront. In addition to coding the site, she also creates a few products available in the store.",
+      "avatar": "images/contacts/anostagia.png"
+    }
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
