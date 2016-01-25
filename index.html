@@ -54,18 +54,7 @@
 
     <div class='row'>
       {{#each onSale}}
-        <div class='col-sm-4'>
-          <img {{bind-attr src='image'}} class='img-thumbnail col-sm-5'/>
-          <div class='col-sm-7'>
-            <h2>{{title}}</h2>
-            <span class='label label-warning'>
-              {{#link-to 'products.onsale'}}On Sale{{/link-to}}
-            </span>
-            <p class='product-description'>{{description}}</p>
-            <p>{{#link-to 'product' this class='btn btn-success'}}
-            Buy for ${{price}}{{/link-to}}</p>
-          </div>
-        </div>
+        {{product-details product=this classNames='col-sm-4'}}
       {{/each}}
     </div>
 
@@ -73,18 +62,10 @@
   </script>
 
   <script type='text/x-handlebars' data-template-name='products/index'>
-    <h1>Todays Product Deals!</h1>
+    <h1>All Products!</h1>
     <ul class='list-unstyled'>
       {{#each}}
-        <li class='row'>
-          <img {{bind-attr src='image'}} class='img-thumbnail col-sm-5'/>
-          <div class='col-sm-7'>
-            <h2>{{title}}</h2>
-            <p class='product-description'>{{description}}</p>
-            <p>{{#link-to 'product' this class='btn btn-success'}}
-            Buy for ${{price}}{{/link-to}}</p>
-          </div>
-        </li>
+        {{product-details product=this tagName='li' classNames='row'}}
       {{/each}}
     </ul>
   </script>
@@ -133,44 +114,55 @@
         <img {{bind-attr src='image'}} class='img-thumbnail img-rounded'/>
       </div>
     </div>
+    {{contact-details contact=crafter className='row'}}
   </script>
 
   <script type="text/x-handlebars" data-template-name='products/onsale'>
+    <h1>Products On Sale</h1>
     <ul class='list-unstyled'>
       {{#each}}
-        <li class='row'>
-          <img {{bind-attr src='image'}} class='img-thumbnail col-sm-5'/>
-          <div class='col-sm-7'>
-            <h2>{{title}}</h2>
-            <p class='product-description'>{{description}}</p>
-            <p>
-              {{#link-to 'product' this class='btn btn-success'}}
-                Buy for ${{price}}
-              {{/link-to}}
-            </p>
-          </div>
-        </li>
+        {{product-details product=this tagName='li' classNames='row'}}
       {{/each}}
     </ul>
   </script>
 
   <script type='text/x-handlebars' data-template-name='products/deals'>
+    <h1>Todays Product Deals!</h1>
     <ul class='list-unstyled'>
       {{#each}}
-        <li class='row'>
-          <img {{bind-attr src='image'}} class='img-thumbnail col-sm-5'/>
-          <div class='col-sm-7'>
-            <h2>{{title}}</h2>
-            <p class='product-description'>{{description}}</p>
-            <p>
-              {{#link-to 'product' this class='btn btn-success'}}
-                Buy for ${{price}}
-              {{/link-to}}
-            </p>
-          </div>
-        </li>
+        {{product-details product=this tagName='li' classNames='row'}}
       {{/each}}
     </ul>
+  </script>
+
+  <script type='text/x-handlebars' data-template-name='components/product-details'>
+    <img {{bind-attr src='product.image'}} class='img-thumbnail col-sm-5'/>
+    <div class='col-sm-7'>
+      <h2>{{product.title}}</h2>
+      <span class='label label-warning'>
+        {{#link-to 'products.onsale'}}On Sale{{/link-to}}
+      </span>  
+      <p class='product-description'>{{product.description}}</p>
+      {{#if hasReviews}}
+        <p class='text-muted'>Read all reviews {{reviewsCount}}.</p>
+      {{/if}}
+      <p>{{#link-to 'product' product class='btn btn-success'}}
+        Buy for ${{product.price}}
+      {{/link-to}}</p>
+    </div>
+  </script>
+
+  <script type='text/x-handlebars' data-template-name='components/contact-details'>
+    <div class='col-sm-9'>
+      <h2>About {{contact.name}}</h2>
+      <p>{{contact.about}}</p>
+      {{#if isProductive}}
+        <p class='text-muted'><span>{{contact.name}}</span> has crafted {{productsCount}} items!</p>
+      {{/if}}
+    </div>
+    <div class='col-sm-3'>
+      <img {{bind-attr src='contact.avatar' alt='contact.name'}} class='img-thumbnail img-rounded'/>
+    </div>
   </script>
 
   <script type='text/x-handlebars' data-template-name='contacts/index'>
