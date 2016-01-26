@@ -38,6 +38,25 @@ App.ProductsController = Ember.ArrayController.extend({
   sortProperties: ['title']
 });
 
+App.ProductController = Ember.ObjectController.extend({
+  ratings: [1,2,3,4,5],
+  isNotReviewed: Ember.computed.alias('review.isNew'),
+  review: function() {
+  	return this.store.createRecord('review', {
+  	  product: this.get('model')
+  	});
+  }.property('model'),
+  actions: {
+  	createReview: function() {
+  	  var controller = this;
+  	  this.get('review').set('reviewedAt', new Date());
+  	  this.get('review').save().then(function(review) {
+  	  	controller.get('model.reviews').addObject(review);
+  	  });
+  	}
+  }
+});
+
 
 App.ContactsIndexController = Ember.ObjectController.extend({
   contactName: Ember.computed.alias('name'),
@@ -55,6 +74,16 @@ App.ContactsIndexController = Ember.ObjectController.extend({
 
 App.ContactsController = Ember.ArrayController.extend({
   sortProperties: ['name']
+});
+
+
+App.ReviewsController = Ember.ArrayController.extend({
+  sortProperties: ['reviewedAt'],
+  sortAscending: false
+});
+
+App.ContactProductsController = Ember.ArrayController.extend({
+  sortProperties: ['title']
 });
 
 
@@ -125,6 +154,15 @@ App.ContactDetailsComponent = Ember.Component.extend({
 });
 
 
+// VIEWS VIEWS VIEWS ###############################
+
+
+App.ProductView = Ember.View.extend({
+  classNames: ['row'],
+  classNameBindings: ['isOnSale'],
+  isOnSale: Ember.computed.alias('controller.isOnSale')
+});
+
 
 // ADAPTERS ADAPTERS ###############################
 
@@ -153,14 +191,21 @@ App.Product = DS.Model.extend({
   isOnSale: DS.attr('boolean'),
   image: DS.attr('string'),
   reviews: DS.hasMany('review', {async: true}),
-  crafter: DS.belongsTo('contact', {async: true})
+  crafter: DS.belongsTo('contact', {async: true}),
+  rating: function() {
+    if(this.get('reviews.length') === 0) { return 0; }
+    return this.get('reviews').reduce(function(previousValue, review) {
+      return previousValue + review.get('rating');
+    }, 0) / this.get('reviews.length');
+  }.property('reviews.@each.rating')
 });
 
 
 App.Review = DS.Model.extend({
   text: DS.attr('string'),
   reviewedAt: DS.attr('date'),
-  product: DS.belongsTo('product')
+  product: DS.belongsTo('product'),
+  rating: DS.attr('number')
 });
 
 
@@ -242,22 +287,26 @@ App.Review.FIXTURES = [
   {
   	id: 100,
   	product: 1,
-  	text: 'Started a fire in no time!'
+  	text: 'Started a fire in no time!',
+  	rating: 4
   },
   {
   	id: 101,
   	product: 1,
-  	text: 'Not the brightest flame, but warm!'
+  	text: 'Not the brightest flame, but warm!',
+  	rating: 5
   },
   {
   	id: 103,
   	product: 3,
-  	text: 'It\'s fun to play with matches again!'
+  	text: 'It\'s fun to play with matches again!',
+  	rating: 4
   },
   {
   	id: 104,
   	product: 4,
-  	text: 'Why in the world would I use primitive tools when I have a lighter?'
+  	text: 'Why in the world would I use primitive tools when I have a lighter?',
+  	rating: 3
   }
 ];
 
