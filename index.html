@@ -6,6 +6,8 @@
   <script src='js/libs/handlebars-v1.3.0.js'></script>
   <script src='js/libs/ember.js'></script>
   <script src='js/libs/ember-data.js'></script>
+  <script src='js/libs/markdown-0.6.0.js'></script>
+  <script src='js/libs/accounting.js'></script>
   <script src='js/app.js'></script>
 
   <link rel='stylesheet' href='stylesheets/application.css'>
@@ -95,7 +97,7 @@
   <script type='text/x-handlebars' data-template-name='product'>
       <div class='col-sm-7'>
         <h2>{{title}}</h2>
-        <h3 class='text-success'>${{price}}</h3>
+        <h3 class='text-success'>{{money price}}</h3>
         <p class='text-muted'>{{description}}</p>
         <p class='text-muted'>This Product has a {{rating}} star rating!</p>
         <p>Finely crafted by {{#link-to 'contact' crafter}}{{crafter.name}}{{/link-to}}.</p>
@@ -125,7 +127,12 @@
     <h3>Reviews</h3>
     <ul>
       {{#each}}
-        <li>{{text}}</li>
+        {{#view 'App.ReviewView' tag='li' length=text.length}}
+          <div class='content'>{{markdown text}}</div>
+          <span class='expand text-success'>
+            Read {{#if view.isExpanded}}Less{{else}}More{{/if}}
+          </span>
+        {{/view}}
       {{else}}
         <li><p class='text-muted'>
           <em>No reviews yet. Be the first to write one!</em>
@@ -164,7 +171,7 @@
         <p class='text-muted'>Read all reviews {{reviewsCount}}.</p>
       {{/if}}
       <p>{{#link-to 'product' product class='btn btn-success'}}
-        Buy for ${{product.price}}
+        Buy for {{money product.price}}
       {{/link-to}}</p>
     </div>
   </script>

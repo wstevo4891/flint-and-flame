@@ -164,6 +164,28 @@ App.ProductView = Ember.View.extend({
 });
 
 
+App.ReviewView = Ember.View.extend({
+  isExpanded: false,
+  classNameBindings: ['isExpanded', 'readMore'],
+  click: function() {
+  	this.toggleProperty('isExpanded');
+  },
+  readMore: Ember.computed.gt('length', 140)
+});
+
+
+// HELPERS HELPERS HELPERS #########################
+
+
+Ember.Handlebars.registerBoundHelper('markdown', function(text) {
+  return new Handlebars.SafeString(markdown.toHTML(text));
+});
+
+Ember.Handlebars.registerBoundHelper('money', function(value) {
+  return accounting.formatMoney(value/100);
+});
+
+
 // ADAPTERS ADAPTERS ###############################
 
 
@@ -287,24 +309,34 @@ App.Review.FIXTURES = [
   {
   	id: 100,
   	product: 1,
+  	reviewedAt: new Date('12/10/2013').getTime(),
   	text: 'Started a fire in no time!',
   	rating: 4
   },
   {
   	id: 101,
   	product: 1,
+  	reviewedAt: new Date('12/12/2013').getTime(),
   	text: 'Not the brightest flame, but warm!',
   	rating: 5
   },
   {
+    id: 102,
+    reviewedAt: new Date('12/14/2013').getTime(),
+    text: "This is some amazing Flint! It lasts **forever** and works even when damp! I still remember the first day when I was only a little fire sprite and got one of these in my flame stalking for treemas. My eyes lit up the moment I tried it! Here's just a few uses for it:\n\n* Create a fire using just a knife and kindling!\n* Works even after jumping in a lake (although, that's suicide for me)\n* Small enough to fit in a pocket -- if you happen to wear pants\n\n\nYears later I'm still using the _same one_. That's the biggest advantage of this -- it doesn't run out easily like matches. As long as you have something to strike it against, **you can start a fire anywhere** you have something to burn!",
+    rating: 5
+  },
+  {
   	id: 103,
   	product: 3,
+  	reviewedAt: new Date('12/22/2013').getTime(),
   	text: 'It\'s fun to play with matches again!',
   	rating: 4
   },
   {
   	id: 104,
   	product: 4,
+  	reviewedAt: new Date('12/30/2013').getTime(),
   	text: 'Why in the world would I use primitive tools when I have a lighter?',
   	rating: 3
   }
