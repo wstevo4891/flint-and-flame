@@ -82,6 +82,7 @@ App.ReviewsController = Ember.ArrayController.extend({
   sortAscending: false
 });
 
+
 App.ContactProductsController = Ember.ArrayController.extend({
   sortProperties: ['title']
 });
@@ -158,9 +159,8 @@ App.ContactDetailsComponent = Ember.Component.extend({
 
 
 App.ProductView = Ember.View.extend({
-  classNames: ['row'],
-  classNameBindings: ['isOnSale'],
-  isOnSale: Ember.computed.alias('controller.isOnSale')
+  isOnSale: Ember.computed.alias('controller.isOnSale'),
+  classNameBindings: ['isOnSale']
 });
 
 
@@ -177,9 +177,9 @@ App.ReviewView = Ember.View.extend({
 // HELPERS HELPERS HELPERS #########################
 
 
-Ember.Handlebars.registerBoundHelper('markdown', function(text) {
-  return new Handlebars.SafeString(markdown.toHTML(text));
-});
+// Ember.Handlebars.registerBoundHelper('markdown', function(text) {
+//   return new Handlebars.SafeString(markdown.toHTML(text));
+// });
 
 Ember.Handlebars.registerBoundHelper('money', function(value) {
   return accounting.formatMoney(value/100);
@@ -248,7 +248,7 @@ App.Product.FIXTURES = [
     description: 'Flint is a hard, sedimentary cryptocrystalline form of the mineral quartz, categorized as a variety of chert.',
     isOnSale: true,
     image: 'images/products/flint.png',
-    reviews: [100,101],
+    reviews: [100,101,102],
     crafter: 200
   },
   {
@@ -315,7 +315,6 @@ App.Review.FIXTURES = [
   },
   {
   	id: 101,
-  	product: 1,
   	reviewedAt: new Date('12/12/2013').getTime(),
   	text: 'Not the brightest flame, but warm!',
   	rating: 5
@@ -328,14 +327,12 @@ App.Review.FIXTURES = [
   },
   {
   	id: 103,
-  	product: 3,
   	reviewedAt: new Date('12/22/2013').getTime(),
   	text: 'It\'s fun to play with matches again!',
   	rating: 4
   },
   {
   	id: 104,
-  	product: 4,
   	reviewedAt: new Date('12/30/2013').getTime(),
   	text: 'Why in the world would I use primitive tools when I have a lighter?',
   	rating: 3
